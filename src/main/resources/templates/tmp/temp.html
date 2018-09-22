@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<header class="header-navigation" id="header">
+    <nav>
+        <div class="logo"><a href="/">Gradual个人博客</a></div>
+        <h2 id="mnavh"><span class="navicon"></span></h2>
+        <ul id="starlist" class="ul-none">
+            <li><a href="/index.html">首页</a></li>
+            <li><a href="/about.html">关于</a></li>
+            <li th:if="${session.user == null}"><a href="/login.html">登录</a></li>
+            <li th:if="${session.user != null}"><a href="javascript:void(0)" th:text="${session.user.username}"></a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside class="l_box" id="l_box">
+    <div class="fenlei">
+        <h2>文章分类</h2>
+        <ul class="ul-none">
+            <li th:each="typeCount : ${application.typeCounts}"><a href="#" th:href="@{/article/type/} + ${typeCount.typeId}">[(${typeCount.type})] ([(${typeCount.count})])</a></li>
+        </ul>
+    </div>
+    <div class="tuijian">
+        <h2>点赞排行</h2>
+        <ul class="ul-none">
+            <li th:each="item : ${application.praiseItems}"><a href="#" th:href="@{/article-} + ${item.id} + '.html'" th:text="${item.title}">Spring Boot 学习笔记</a></li>
+        </ul>
+    </div>
+
+    <div class="tuijian">
+        <h2>友情链接</h2>
+        <ul class="ul-none">
+            <li th:each="link : ${application.links}"><a th:href="${link.href}" th:text="${link.title}"></a></li>
+        </ul>
+    </div>
+
+</aside>
+
+<footer id="footer">
+    <p>Design by <a href="#" target="_blank">Gradual个人博客</a> <a href="http://www.miitbeian.gov.cn">赣ICP备18003544号-1</a></p>
+</footer>
+</body>
+</html>

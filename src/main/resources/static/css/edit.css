@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+#header a {
+    color: #555;
+}
+
+#edit {
+    margin-top: 60px;
+    background-color: #fff;
+}
+
+.page-header {
+    color: #555;
+}
+
+.page-header i {
+    margin: 10px 10px 0 0;
+}
+
+.submit-article {
+    margin-top: 20px;
+    float: right;
+}
+
+.add-type {
+    width: 30%;
+}

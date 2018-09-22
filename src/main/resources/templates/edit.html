@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发表/编辑博客_Gradual个人博客 - 一个在web后端为兴趣和生活努力的Java程序员个人博客网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/base.css" rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" href="css/edit.css" th:href="@{/css/edit.css}">
+    <link rel="stylesheet" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/wangEditor.css}">
+</head>
+<body>
+<div th:replace="tmp/temp::#header"></div>
+<div id="edit">
+    <div class="container">
+        <div class="row">
+            <input type="hidden" th:if="${edit.article != null}" th:value="${edit.article != null} ? ${edit.article.html}" id="html">
+            <form>
+                <div class="page-header"><h2><i class="glyphicon glyphicon-pencil"></i>写博客</h2></div>
+                <div class="form-group">
+                    <label class="article-title">标题</label>
+                    <input name="title" type="text" id="title" class="form-control" th:value="${edit.article != null} ? ${edit.article.title}">
+                </div>
+                <div id="editor">
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label>分类</label><br>
+                    <div class="btn-group" data-toggle="buttons" id="article-type">
+                        <label class="btn btn-default" th:each="articleType : ${edit.articleTypes}" th:class="${edit.typeIds != null and edit.typeIds.contains(articleType.value)} ? 'active btn btn-default' : 'btn btn-default'">
+                            <input type="checkbox" name="type" th:value="${articleType.value}" th:checked="${edit.typeIds != null} ? ${edit.typeIds.contains(articleType.value)}">
+                            <span th:text="${articleType.key}"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="input-group add-type">
+                    <input type="text" id="customType" class="form-control" placeholder="自定义分类">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="addArticleType()">添加分类</button>
+                    </span>
+                </div>
+                <hr>
+                <input type="hidden" value="0" th:value="${edit.article != null} ? ${edit.article.id} : '0'" name="id" id="articleId">
+                <button type="button" class="btn btn-lg btn-primary submit-article" onclick="submitArticle()" th:text="${edit.article != null} ? '修改博客' : '提交博客'">提交博客</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="tmp/temp::#footer"></div>
+
+<script type="text/javascript" src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="js/comm.js" th:src="@{/js/comm.js}"></script>
+<script type="text/javascript" src="js/wangEditor.js" th:src="@{/js/wangEditor.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<!--[if lt IE 9]>
+<script src="js/modernizr.js" th:src="@{/js/modernizr.js}"></script>
+<![endif]-->
+<script type="text/javascript">
+    $(function(){
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    });
+
+    var edit = window.wangEditor;
+    var editor = new edit('#editor');
+    editor.customConfig.uploadImgServer = '/uploadImg';
+    editor.customConfig.uploadFileName = 'img';
+    editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+    editor.customConfig.uploadImgMaxLength = 1;
+    editor.create();
+    editor.txt.html($("#html").val());
+
+    var submitArticle = function () {
+        var id = $("#articleId").val();
+        var title = $('#title').val();
+        var html = editor.txt.html();
+        var txt = editor.txt.text();
+        var types = "";
+        $("input[name='type']").each(function () {
+            if($(this).is(':checked')) {
+                types = types + "," + $(this).val();
+            }
+        });
+        types = types.substr(1);
+
+        if (window.confirm("确认提交吗?")) {
+            if (id !== '0') {
+                var url = "/article/" + id;
+                $.ajax({
+                    url : url,
+                    type : 'put',
+                    data : {
+                        id: id,
+                        title : title,
+                        text : txt,
+                        typeId : types,
+                        html : html
+                    },
+                    dataType : "JSON",
+                    success : function (data) {
+                        alert(data.message);
+                        if (data.flag === true) {
+                            window.location.href = "/article-" + id + ".html";
+                        }
+                    }
+                })
+            } else {
+                $.ajax({
+                    url : '/article',
+                    type : 'post',
+                    data : {
+                        title : title,
+                        text : txt,
+                        typeId : types,
+                        html : html
+                    },
+                    dataType : "JSON",
+                    success : function (data) {
+                        alert(data.message);
+                        if (data.flag === true) {
+                            alert("页面跳转到" + data.url);
+                            window.location.href = '/' + data.url;
+                        }
+                    }
+                })
+            }
+        }
+    };
+
+    var addArticleType = function () {
+        var customType = $("#customType").val();
+        var userId = $("#userId").val();
+        if (window.confirm("确认添加分类吗?")) {
+            $.ajax({
+                url: "/addArticleType",
+                data : {
+                    type : customType,
+                },
+                type : "POST",
+                dataType : "JSON",
+                success : function (data) {
+                    if (data.flag === true) {
+                        $("#article-type").append("<label class=\"btn btn-default\"><input type=\"checkbox\" name=\"type\" value=\"" + data.id+ "\">"+ customType +"</label>");
+                    }
+                    alert(data.message);
+                    $("#customType").val("");
+                }
+            });
+        }
+
+
+    }
+</script>
+</body>
+</html>

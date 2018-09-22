@@ -1,0 +1,64 @@
+﻿
+DROP TABLE IF EXISTS `article_discuss`;
+CREATE TABLE `article_discuss` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '博文ID',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `content` tinytext COMMENT '评论内容',
+  `nikename` varchar(40) DEFAULT NULL COMMENT '评论人昵称',
+  `ip_address` varchar(20) DEFAULT NULL COMMENT '评论人IP地址',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `article_type`;
+CREATE TABLE `article_type` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '博文ID',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `create_id` bigint(20) DEFAULT NULL COMMENT '创建人ID',
+  `type` varchar(60) DEFAULT NULL COMMENT '类型',
+  `img_base64` tinytext COMMENT '类型图标Base64',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `blog_article` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '博文ID',
+  `gmt_create` datetime NOT NULL COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `article_html` text NOT NULL COMMENT '博文',
+  `praise` bigint(20) NOT NULL DEFAULT '0' COMMENT '点赞数量',
+  `type_article_nexus_id` bigint(20) NOT NULL COMMENT '类型博文关联id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态(0=正常/1=删除)',
+  `title` varchar(100) NOT NULL COMMENT '博文标题',
+  `article_txt` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE `user_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `username` varchar(40) DEFAULT NULL COMMENT '用户名',
+  `password` varchar(40) DEFAULT NULL COMMENT '密码',
+  `status` int(11) DEFAULT '0' COMMENT '用户状态(0=正常/1=封禁)',
+  `role` int(11) DEFAULT '0' COMMENT '用户角色',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `type_article_nexus` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `type_id` bigint(20) DEFAULT NULL,
+  `article_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ keyProperty="id" useGeneratedKeys="true"

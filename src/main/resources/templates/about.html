@@ -1,0 +1,50 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>关于我__Gradual个人博客 - 一个在web后端为兴趣和生活努力的Java程序员个人博客网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/base.css" th:href="@{/css/base.css}" rel="stylesheet">
+    <link href="css/index.css" th:href="@{/css/index.css}" rel="stylesheet">
+    <link href="css/m.css" th:href="@{/css/m.css}" rel="stylesheet">
+
+</head>
+<body>
+<div th:replace="tmp/temp::#header"></div>
+<article>
+    <div th:replace="tmp/temp::#l_box(incloudUri='about')"></div>
+
+    <main class="r_box">
+        <div class="about">
+            <p>
+            <h2>关于我的博客</h2>
+            <p>域 名：blog.gradual.top 创建于2018年09月22日&nbsp;</p>
+            <br/>
+            <p>服务器：阿里云服务器&nbsp;</p>
+            <br/>
+            <p>备案号：赣ICP备18003544号-1</p>
+            <br/>
+            <p>前端基于<a href="https://www.yangqq.com/download/div/2018-06-17/874.html">杨青博客模板</a>修改</p>
+            <br/>
+            <p>后端使用Java开发</p>
+            <br/>
+            <p>框架： Spring Boot, Spring MVC, Spring, MyBatis等</p>
+            <br/>
+            <p>数据库： MySQL， Redis</p>
+            <br/>
+            <p>GitHub: </p>
+        </div>
+    </main>
+</article>
+<div th:replace="tmp/temp::#footer"></div>
+
+<a href="#" class="cd-top">Top</a>
+
+<script src="js/jquery.min.js" th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+<script type="text/javascript"  src="js/hc-sticky.js" th:src="@{/js/hc-sticky.js}"></script>
+<script type="text/javascript" src="js/comm.js" th:src="@{/js/comm.js}"></script>
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"  th:src="@{/js/modernizr.js}"></script>
+<![endif]-->
+</body>
+</html>

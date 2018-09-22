@@ -1,0 +1,43 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>分类：[[${listView.type.type}]]_Gradual个人博客 - 一个在web后端为兴趣和生活努力的Java程序员个人博客网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/base.css" rel="stylesheet" th:href="@{/css/base.css}">
+    <link href="css/index.css" rel="stylesheet" th:href="@{/css/index.css}">
+    <link href="css/m.css" rel="stylesheet" th:href="@{/css/m.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}">
+</head>
+<body>
+<div th:replace="tmp/temp::#header"></div>
+<article>
+    <div th:replace="tmp/temp::#l_box(incloudUri='list')"></div>
+    <main class="r_box">
+        <ul th:object="${listView}" class="ul-none">
+            <li th:each="cart : *{pageInfo.list}">
+                <i th:if="${cart.imgPath != null}"><a href="#"><img th:src="${cart.imgPath}"></a></i>
+                <h3><a href="/" th:href="@{/article-} + ${cart.id} + '.html'" th:text="${cart.title}"></a></h3>
+                <p th:text="${cart.txt}"></p>
+                <div><span class="fa fa-heart" th:text="'&nbsp;&nbsp;' + ${cart.praise}"></span></div>
+            </li>
+        </ul>
+
+        <div class="pagelist" th:if="${listView.pageInfo.hasPreviousPage || listView.pageInfo.hasNextPage}">
+            <a th:if="${listView.pageInfo.hasPreviousPage}" th:href="${listView.pageInfo.hasPreviousPage} ? @{/article/type/} + ${listView.type.id} + '?pageNum=' + ${listView.pageInfo.prePage} : 'javascript:void(0)'">上一页</a>&nbsp;&nbsp;
+            <a th:each="num : ${listView.pageInfo.navigatepageNums}" th:text="${num}" th:href="@{/article/type/} + ${listView.type.id} + '?pageNum=' + ${num} " th:class="${listView.pageInfo.pageNum} == ${num} ? 'curPage' : ''">1</a>&nbsp;&nbsp;
+            <a th:if="${listView.pageInfo.hasNextPage}" th:href="${listView.pageInfo.hasNextPage} ? @{/article/type/} + ${listView.type.id} + '?pageNum=' + ${listView.pageInfo.nextPage} : 'javascript:void(0)'">下一页</a>
+        </div>
+    </main>
+</article>
+<div th:replace="tmp/temp::#footer"></div>
+<a href="#" class="cd-top">Top</a>
+
+<script src="js/jquery.min.js" type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="js/hc-sticky.js" th:src="@{/js/hc-sticky.js}"></script>
+<script type="text/javascript" src="js/comm.js" th:src="@{/js/comm.js}"></script>
+<!--[if lt IE 9]>
+<script src="js/modernizr.js" th:src="@{/js/modernizr.js}"></script>
+<![endif]-->
+</body>
+</html>
