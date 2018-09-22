@@ -7,10 +7,9 @@ spring:
   cache:
     type: redis
   datasource:
-#    url: jdbc:mysql://106.15.198.114:3306/gradual_blog?useUnicode=true&characterEncoding=utf-8&useSSL=true
     url: jdbc:mysql:///gradual_blog?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
-    password: 941103
+    password: 12345
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
     druid:
