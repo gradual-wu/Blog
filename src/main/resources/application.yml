@@ -7,7 +7,7 @@ spring:
   cache:
     type: redis
   datasource:
-    url: jdbc:mysql:///gradual_blog?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql:///database_name?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: 12345
     type: com.alibaba.druid.pool.DruidDataSource
@@ -37,8 +37,8 @@ spring:
         enabled: true
         url-pattern: /druid/*
         reset-enable: true
-        login-username: gradual
-        login-password: 941103
+        login-username: admin
+        login-password: 123456
       # 配置StatFilter
       filter:
         stat.db-type: mysql
@@ -84,16 +84,3 @@ pagehelper:
 server:
   tomcat:
     uri-encoding: UTF-8
-
-logging:
-  level:
-    top.gradual.blog: debug
-
-
-
-qiniu:
-  ak: eRlRqW_As0lAbKut2Lf87HbKQsymskjafXBVDn-D
-  sk: v7c0JBmPiXpSThXjyEXdQ5md81pxNfjuVD2zlYiP
-  bucketname: gradual-top
-
-
